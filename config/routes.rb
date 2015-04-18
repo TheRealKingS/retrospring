@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   # Moderation panel
   constraints ->(req) { req.env['warden'].authenticate?(scope: :user) &&
-                       (req.env['warden'].user.admin? or req.env['warden'].user.moderator?) } do
+                       (req.env['warden'].user.mod?) } do
     match '/moderation(/:type)', to: 'moderation#index', via: :get, as: :moderation, defaults: {type: 'all'}
     namespace :ajax do
       match '/mod/destroy_report', to: 'moderation#destroy_report', via: :post, as: :mod_destroy_report
@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       match '/mod/destroy_comment', to: 'moderation#destroy_comment', via: :post, as: :mod_destroy_comment
       match '/mod/create_vote', to: 'moderation#vote', via: :post, as: :mod_create_vote
       match '/mod/destroy_vote', to: 'moderation#destroy_vote', via: :post, as: :mod_destroy_vote
+      match '/mod/privilege', to: 'moderation#privilege', via: :post, as: :mod_privilege
     end
   end
 
@@ -32,6 +33,8 @@ Rails.application.routes.draw do
 
   match '/about', to: 'static#about', via: 'get'
   match '/help/faq', to: 'static#faq', via: 'get', as: :help_faq
+  match '/privacy', to: 'static#privacy_policy', via: 'get', as: :privacy_policy
+  match '/terms', to: 'static#terms', via: 'get', as: :terms
 
   # Devise routes
   devise_for :users, path: 'user', skip: [:sessions, :registrations]
@@ -85,6 +88,7 @@ Rails.application.routes.draw do
     match '/create_group', to: 'group#create', via: :post, as: :create_group
     match '/destroy_group', to: 'group#destroy', via: :post, as: :destroy_group
     match '/group_membership', to: 'group#membership', via: :post, as: :group_membership
+    match '/preview', to: "question#preview", via: :post, as: :preview
   end
 
   match '/public', to: 'public#index', via: :get, as: :public_timeline
@@ -93,7 +97,7 @@ Rails.application.routes.draw do
   match '/notifications(/:type)', to: 'notifications#index', via: :get, as: :notifications, defaults: {type: 'all'}
 
   match '/inbox', to: 'inbox#show', via: 'get'
-  
+
   match '/user/:username(/p/:page)', to: 'user#show', via: 'get', defaults: {page: 1}
   match '/@:username(/p/:page)', to: 'user#show', via: 'get', as: :show_user_profile_alt, defaults: {page: 1}
   match '/@:username/a/:id', to: 'answer#show', via: 'get', as: :show_user_answer_alt

@@ -24,7 +24,7 @@ feature "Inbox", :devise do
 
     login_as me, scope: :user
     visit root_path
-    expect(page).to have_text('1 new question')
+    expect(page).to have_text('1 new question'.upcase)
     page.driver.render Rails.root.join("tmp/#{Time.now.to_i}_1.png"), full: true
 
     click_link "Inbox"
@@ -49,6 +49,27 @@ feature "Inbox", :devise do
   #   Then I get a new question
   scenario 'user generates new question', js: true do
     me = FactoryGirl.create :user
+
+    login_as me, scope: :user
+    visit inbox_path
+    page.driver.render Rails.root.join("tmp/#{Time.now.to_i}_1.png"), full: true
+
+    click_button "Get new question"
+    wait_for_ajax
+    expect(page).to have_text('Answer'.upcase)
+    page.driver.render Rails.root.join("tmp/#{Time.now.to_i}_2.png"), full: true
+  end
+
+  # Scenario: User with privacy options generates new question
+  #   Given I am signed in
+  #   When I visit the inbox
+  #   And I click "Get new question"
+  #   And I don't want to receive questions by anonymous users
+  #   Then I get a new question
+  scenario 'user with privacy options generates new question', js: true do
+    me = FactoryGirl.create :user
+    me.privacy_allow_anonymous_questions = false
+    me.save
 
     login_as me, scope: :user
     visit inbox_path
