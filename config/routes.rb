@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
   match '/about', to: 'static#about', via: 'get'
   match '/help/faq', to: 'static#faq', via: 'get', as: :help_faq
+  match '/privacy', to: 'static#privacy_policy', via: 'get', as: :privacy_policy
+  match '/terms', to: 'static#terms', via: 'get', as: :terms
 
   # Devise routes
   devise_for :users, path: 'user', skip: [:sessions, :registrations]
@@ -79,6 +81,7 @@ Rails.application.routes.draw do
     match '/create_group', to: 'group#create', via: :post, as: :create_group
     match '/destroy_group', to: 'group#destroy', via: :post, as: :destroy_group
     match '/group_membership', to: 'group#membership', via: :post, as: :group_membership
+    match '/preview', to: "question#preview", via: :post, as: :preview
   end
 
   match '/public', to: 'public#index', via: :get, as: :public_timeline
@@ -87,7 +90,7 @@ Rails.application.routes.draw do
   match '/notifications(/:type)', to: 'notifications#index', via: :get, as: :notifications, defaults: {type: 'all'}
 
   match '/inbox', to: 'inbox#show', via: 'get'
-  
+
   match '/user/:username(/p/:page)', to: 'user#show', via: 'get', defaults: {page: 1}
   match '/@:username(/p/:page)', to: 'user#show', via: 'get', as: :show_user_profile_alt, defaults: {page: 1}
   match '/@:username/a/:id', to: 'answer#show', via: 'get', as: :show_user_answer_alt

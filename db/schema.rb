@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20150205153753) do
   add_index "answers", ["user_id", "created_at"], name: "index_answers_on_user_id_and_created_at", using: :btree
 
   create_table "comments", force: true do |t|
-    t.string   "content"
+    t.string   "content",    limit: nil
     t.integer  "answer_id"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -51,10 +51,10 @@ ActiveRecord::Schema.define(version: 20150205153753) do
   add_index "group_members", ["user_id"], name: "index_group_members_on_user_id", using: :btree
 
   create_table "groups", force: true do |t|
-    t.integer  "user_id",                     null: false
-    t.string   "name"
-    t.string   "display_name"
-    t.boolean  "private",      default: true
+    t.integer  "user_id",                                 null: false
+    t.string   "name",         limit: nil
+    t.string   "display_name", limit: nil
+    t.boolean  "private",                  default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20150205153753) do
   create_table "moderation_comments", force: true do |t|
     t.integer  "report_id"
     t.integer  "user_id"
-    t.string   "content"
+    t.string   "content",    limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20150205153753) do
   add_index "moderation_votes", ["user_id"], name: "index_moderation_votes_on_user_id", using: :btree
 
   create_table "notifications", force: true do |t|
-    t.string   "target_type"
+    t.string   "target_type",  limit: nil
     t.integer  "target_id"
     t.integer  "recipient_id"
     t.boolean  "new"
@@ -103,15 +103,15 @@ ActiveRecord::Schema.define(version: 20150205153753) do
   end
 
   create_table "questions", force: true do |t|
-    t.string   "content"
+    t.string   "content",             limit: nil
     t.boolean  "author_is_anonymous"
-    t.string   "author_name"
-    t.string   "author_email"
+    t.string   "author_name",         limit: nil
+    t.string   "author_email",        limit: nil
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "answer_count",        default: 0,     null: false
-    t.boolean  "nsfw",                default: false
+    t.integer  "answer_count",                    default: 0,     null: false
+    t.boolean  "nsfw",                            default: false
   end
 
   add_index "questions", ["user_id", "created_at"], name: "index_questions_on_user_id_and_created_at", using: :btree
@@ -128,21 +128,21 @@ ActiveRecord::Schema.define(version: 20150205153753) do
   add_index "relationships", ["target_id"], name: "index_relationships_on_target_id", using: :btree
 
   create_table "reports", force: true do |t|
-    t.string   "type",                       null: false
-    t.integer  "target_id",                  null: false
-    t.integer  "user_id",                    null: false
+    t.string   "type",       limit: nil,                 null: false
+    t.integer  "target_id",                              null: false
+    t.integer  "user_id",                                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "deleted",    default: false
+    t.boolean  "deleted",                default: false
   end
 
   create_table "services", force: true do |t|
-    t.string   "type",          null: false
-    t.integer  "user_id",       null: false
-    t.string   "uid"
-    t.string   "access_token"
-    t.string   "access_secret"
-    t.string   "nickname"
+    t.string   "type",          limit: nil, null: false
+    t.integer  "user_id",                   null: false
+    t.string   "uid",           limit: nil
+    t.string   "access_token",  limit: nil
+    t.string   "access_secret", limit: nil
+    t.string   "nickname",      limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -159,34 +159,34 @@ ActiveRecord::Schema.define(version: 20150205153753) do
   add_index "smiles", ["user_id"], name: "index_smiles_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "email",                             default: "",    null: false
-    t.string   "encrypted_password",                default: "",    null: false
-    t.string   "reset_password_token"
+    t.string   "email",                             limit: nil, default: "",    null: false
+    t.string   "encrypted_password",                limit: nil, default: "",    null: false
+    t.string   "reset_password_token",              limit: nil
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                     default: 0,     null: false
+    t.integer  "sign_in_count",                                 default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
+    t.string   "current_sign_in_ip",                limit: nil
+    t.string   "last_sign_in_ip",                   limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "screen_name"
-    t.integer  "friend_count",                      default: 0,     null: false
-    t.integer  "follower_count",                    default: 0,     null: false
-    t.integer  "asked_count",                       default: 0,     null: false
-    t.integer  "answered_count",                    default: 0,     null: false
-    t.integer  "commented_count",                   default: 0,     null: false
-    t.string   "display_name"
-    t.integer  "smiled_count",                      default: 0,     null: false
-    t.boolean  "admin",                             default: false, null: false
-    t.string   "motivation_header",                 default: "",    null: false
-    t.string   "website",                           default: "",    null: false
-    t.string   "location",                          default: "",    null: false
-    t.text     "bio",                               default: "",    null: false
-    t.boolean  "moderator",                         default: false, null: false
-    t.string   "profile_picture_file_name"
-    t.string   "profile_picture_content_type"
+    t.string   "screen_name",                       limit: nil
+    t.integer  "friend_count",                                  default: 0,     null: false
+    t.integer  "follower_count",                                default: 0,     null: false
+    t.integer  "asked_count",                                   default: 0,     null: false
+    t.integer  "answered_count",                                default: 0,     null: false
+    t.integer  "commented_count",                               default: 0,     null: false
+    t.string   "display_name",                      limit: nil
+    t.integer  "smiled_count",                                  default: 0,     null: false
+    t.boolean  "admin",                                         default: false, null: false
+    t.string   "motivation_header",                 limit: nil, default: "",    null: false
+    t.string   "website",                           limit: nil, default: "",    null: false
+    t.string   "location",                          limit: nil, default: "",    null: false
+    t.text     "bio",                                           default: "",    null: false
+    t.boolean  "moderator",                                     default: false, null: false
+    t.string   "profile_picture_file_name",         limit: nil
+    t.string   "profile_picture_content_type",      limit: nil
     t.integer  "profile_picture_file_size"
     t.datetime "profile_picture_updated_at"
     t.boolean  "profile_picture_processing"
@@ -194,16 +194,16 @@ ActiveRecord::Schema.define(version: 20150205153753) do
     t.integer  "crop_y"
     t.integer  "crop_w"
     t.integer  "crop_h"
-    t.boolean  "supporter",                         default: false
-    t.boolean  "privacy_allow_anonymous_questions", default: true
-    t.boolean  "privacy_allow_public_timeline",     default: true
-    t.boolean  "privacy_allow_stranger_answers",    default: true
-    t.boolean  "privacy_show_in_search",            default: true
-    t.boolean  "banned",                            default: false
-    t.boolean  "blogger",                           default: false
-    t.boolean  "nsfw",                              default: false
-    t.boolean  "show_nsfw",                         default: false
-    t.boolean  "privacy_allow_nsfw_questions",      default: true
+    t.boolean  "supporter",                                     default: false
+    t.boolean  "privacy_allow_anonymous_questions",             default: true
+    t.boolean  "privacy_allow_public_timeline",                 default: true
+    t.boolean  "privacy_allow_stranger_answers",                default: true
+    t.boolean  "privacy_show_in_search",                        default: true
+    t.boolean  "banned",                                        default: false
+    t.boolean  "blogger",                                       default: false
+    t.boolean  "nsfw",                                          default: false
+    t.boolean  "show_nsfw",                                     default: false
+    t.boolean  "privacy_allow_nsfw_questions",                  default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -13,27 +13,14 @@
           = succeed '!' do
             = APP_CONFIG['site_name']
           %br/
-          .media
-            .pull-left
-              %a{href: show_user_profile_path('nilsding')}
-                %img.img-rounded.answerbox--img{src: User.find_by_screen_name('nilsding').profile_picture.url(:medium)}
-            .media-body
-              %h4.entry-text.entry-about nilsding
-              %h6.entry-subtext Backend, Server & Code
-          .media
-            .pull-left
-              %a{href: show_user_profile_path('pixeldesu')}
-                %img.img-rounded.answerbox--img{src: User.find_by_screen_name('pixeldesu').profile_picture.url(:medium)}
-            .media-body
-              %h4.entry-text.entry-about pixeldesu
-              %h6.entry-subtext Frontend Design & Layout
-          .media
-            .pull-left
-              %a{href: show_user_profile_path('Filippus')}
-                %img.img-rounded.answerbox--img{src: User.find_by_screen_name('Filippus').profile_picture.url(:medium)}
-            .media-body
-              %h4.entry-text.entry-about Filippus
-              %h6.entry-subtext Moderator Management & Support
+          - APP_CONFIG['admins'].each do |adm|
+            .media
+              .pull-left
+                %a{href: show_user_profile_path(adm['screen_name'])}
+                  %img.img-rounded.answerbox--img{src: User.find_by_screen_name(adm['screen_name']).profile_picture.url(:medium)}
+              .media-body
+                %h4.entry-text.entry-about= adm['about_text']
+                %h6.entry-subtext= adm['subtext']
       .panel.panel-default
         .panel-body
           %h3 Moderators
@@ -42,18 +29,20 @@
           that look after you!
           %ul.about--moderator
             - User.where(moderator: true).each do |mod|
-              %li
-                %a{href: show_user_profile_path(mod.screen_name)}
-                  %img.answerbox--img-small{src: User.find_by_screen_name(mod.screen_name).profile_picture.url(:medium)}
-                = mod.screen_name
+              %a{href: show_user_profile_path(mod.screen_name), title: mod.screen_name, data: { toggle: :tooltip, placement: :top }}
+                %img.img-rounded.answerbox--img-small{src: mod.profile_picture.url(:small)}
     .col-sm-4
       .panel.panel-default
         .panel-body
-          %h3 Alpha version
-          %p This is an alpha version, full of bugs.  Caveat emptor.
+          %h3 Unfinished
           %p
-            Found a bug?  Have an idea for a must-have feature?  Please
-            = link_to "report them!", 'https://github.com/retrospring/bugs/issues'
+            = APP_CONFIG['site_name']
+            is running on unfinished code, full of bugs. Caveat emptor.
+          %p
+            Want to contribute? If you are a Ruby developer, CoffeeScript coder or frontend designer, you can now help
+            = APP_CONFIG['site_name']
+            to get the features everyone wanted! If you are not, you can still report bugs at our 
+            = link_to "Github repository!", 'https://github.com/retrospring/retrospring'
 
           %p
             Still have some questions? Check our
@@ -83,22 +72,8 @@
     .col-sm-4
       .panel.panel-default
         .panel-body
-          %h3 Donate
-          We are not backed by any company, but we need some money to keep
-          our server infrastructure running.
-
-          %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "_top"}
-            %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}/
-            %input{:name => "hosted_button_id", :type => "hidden", :value => "6ZT5MS6UGU6HC"}/
-            %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/AT/i/btn/btn_donateCC_LG.gif", :type => "image"}/
-            %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/de_DE/i/scr/pixel.gif", :width => "1"}/
-
-          Want to support us over a longer timespan? We also have a Patreon campaign!
-          %a.btn.btn-primary.btn-block{href: "https://patreon.com/retrospring"} Patreon
-      .panel.panel-default
-        .panel-body
-          %h3 Patrons
-          People that believe in our vision, and that's why we love them <3
+          %h3 Funding
+          Currently Retrospring is running of the developers funds and will be able to sustain at the current needs of servers. Hereby we want to thank the people who previously donated to our project and helped it grow. Everyone shown at the bottom of this panel has contributed to the project with donations or great input.
           %ul.about--moderator
             - User.where(supporter: true).each do |sup|
               %a{href: show_user_profile_path(sup.screen_name), title: sup.screen_name, data: { toggle: :tooltip, placement: :top }}

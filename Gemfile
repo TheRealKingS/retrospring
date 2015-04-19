@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 source 'https://rails-assets.org'
 
-gem 'rails', '4.1.8'
+gem 'rails', '4.2.1'
 
 gem 'pg', group: :postgres
 gem 'mysql2', group: :mysql
@@ -41,7 +41,7 @@ gem 'rails_admin'
 gem 'sidekiq'
 gem 'sinatra', require: false
 
-gem 'questiongenerator', git: 'https://github.com/justask/questiongenerator.git'
+gem 'questiongenerator', git: 'https://github.com/retrospring/questiongenerator.git'
 
 gem 'sanitize'
 gem 'redcarpet'
@@ -63,11 +63,6 @@ gem 'spoiler-alert-rails'
 
 group :development do
   gem 'spring'
-
-  # Capistrano for deployment
-  gem 'capistrano', '~> 3.1'
-  gem 'capistrano-rvm', group: :rvm
-  gem 'capistrano-rails', '~> 1.1'
 end
 
 group :production do
