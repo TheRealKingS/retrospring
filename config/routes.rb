@@ -73,6 +73,8 @@ Rails.application.routes.draw do
     match '/destroy_answer', to: 'answer#destroy', via: :post, as: :destroy_answer
     match '/create_friend', to: 'friend#create', via: :post, as: :create_friend
     match '/destroy_friend', to: 'friend#destroy', via: :post, as: :destroy_friend
+    match '/create_block', to: 'block#create', via: :post, as: :create_block
+    match '/destroy_block', to: 'block#destroy', via: :post, as: :destroy_block
     match '/create_smile', to: 'smile#create', via: :post, as: :create_smile
     match '/destroy_smile', to: 'smile#destroy', via: :post, as: :destroy_smile
     match '/create_comment', to: 'comment#create', via: :post, as: :create_comment

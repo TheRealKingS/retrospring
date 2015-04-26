@@ -87,4 +87,8 @@ class UserController < ApplicationController
     @user = User.where('LOWER(screen_name) = ?', params[:username].downcase).first!
     @questions = @user.questions.where(author_is_anonymous: false).reverse_order.paginate(page: params[:page])
   end
+
+  def blocked_users
+    @title = 'Blocked Users'
+  end
 end

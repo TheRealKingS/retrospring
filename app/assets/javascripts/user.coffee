@@ -14,6 +14,10 @@ $(document).on "click", "button[name=user-action]", ->
     when 'unfollow'
       count--
       '/ajax/destroy_friend'
+    when 'block'
+      '/ajax/create_block'
+    when 'unblock'
+      '/ajax/destroy_block'
 
   success = false
 

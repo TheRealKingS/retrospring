@@ -7,4 +7,5 @@ module UserHelper
     return link_to(name, show_user_profile_path(user.screen_name), class: "#{"user--banned" if user.banned?}") if url
     name
   end
+
 end

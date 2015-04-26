@@ -17,7 +17,11 @@ class User < ActiveRecord::Base
   has_many :passive_relationships, class_name: 'Relationship',
                                    foreign_key: 'target_id',
                                    dependent: :destroy
+  has_many :active_foes, class_name: 'Block',
+                         foreign_key: 'target_id',
+                         dependent: :destroy
   has_many :friends,   through: :active_relationships, source: :target
+  has_many :foes,      through: :active_foes, source: :target
   has_many :followers, through: :passive_relationships, source: :source
   has_many :smiles, dependent: :destroy
   has_many :services, dependent: :destroy
@@ -89,9 +93,24 @@ class User < ActiveRecord::Base
     active_relationships.find_by(target: target_user).destroy
   end
 
+  # blocks an user.
+  def block(target_user)
+    active_foes.create(target: target_user)
+  end
+
+  # unblock an user
+  def unblock(target_user)
+    active_foes.find_by(target: target_user).destroy
+  end
+
   # @return [Boolean] true if +self+ is following +target_user+
   def following?(target_user)
     friends.include? target_user
+  end
+
+  # @return [Boolean] true if +self+ is blocking +target_user+
+  def blocking?(target_user)
+    foes.include? target_user
   end
 
   # @param group [Group]

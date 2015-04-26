@@ -79,3 +79,5 @@ group :development, :test do
   gem 'database_cleaner'
 end
 
+# For Windows...
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]

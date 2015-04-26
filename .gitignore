@@ -25,3 +25,6 @@ coverage/
 
 # every fucking time, dolphin
 .directory
+
+config/database.yml
+config/justask.yml
